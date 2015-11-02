@@ -1,5 +1,17 @@
 import datetime
 
+DATE = datetime.datetime.now().strftime('%d/%m/%Y')
+FMT = '%H:%M'
+START_STR = '8:00'
+END_STR = '18:00'
+START =  datetime.datetime.strptime(START_STR,FMT)
+END  = datetime.datetime.strptime(END_STR,FMT)
+TIMESLOT = 30
+
+DAY = 'day'
+WEEKDAYS = ['Seg','Ter','Qua','Qui','Sex']
+WEEKDAYS_AVOID = ['Sáb','Dom']
+
 def minutesRange(start,end,delta):
 
 	time_delta = end-start
