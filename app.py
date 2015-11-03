@@ -5,7 +5,7 @@ import sys
 from _time import *
 
 INPUT = 'schedule.json'
-OPTIONS = 'Options:\n r-[Room] : Checks the availability of a single room\n t-[Time] : Returns a list of every room available in the current time slot'
+OPTIONS = 'Options:\n r-[Room] : Checks the availability of a single room\n t-[Time] : Returns a list of every room available in the current time slot\n [Any other command] : Exit the program'
 GREETING ='\n██╗███████╗████████╗███████╗████████╗██╗   ██╗██████╗ ██╗   ██╗\n██║██╔════╝╚══██╔══╝██╔════╝╚══██╔══╝██║   ██║██╔══██╗╚██╗ ██╔╝\n██║███████╗   ██║   ███████╗   ██║   ██║   ██║██║  ██║ ╚████╔╝ \n██║╚════██║   ██║   ╚════██║   ██║   ██║   ██║██║  ██║  ╚██╔╝  \n██║███████║   ██║   ███████║   ██║   ╚██████╔╝██████╔╝   ██║   \n╚═╝╚══════╝   ╚═╝   ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝    ╚═╝\n'
 
 def main():
@@ -35,17 +35,22 @@ def main():
                         time = datetime.datetime.strptime('00:00',FMT)
                         time = time + datetime.timedelta(seconds = 60 * TIMESLOT * int(timeslots))
                         time_available = time.strftime(FMT)
-                        print (name+': available in the next \t'+timeslots+' timeslots \t('+time_available+')')
+                        print (name+': available now and in the next \t'+timeslots+' timeslots \t('+time_available+')')
                 elif  option  == 'r':
                     for single_time in minutesRange(START,END,TIMESLOT):
-                        for room in schedule[weekday][single_time.strftime(FMT)]:
+                        for entry in schedule[weekday][single_time.strftime(FMT)]:
+                            room, timeslots = entry.split('-')
                             if room == query:
-                                print(room+' '+single_time.strftime(FMT))
+                                timeslots = int(timeslots) + 1
+                                time = datetime.datetime.strptime('00:00',FMT)
+                                time = time + datetime.timedelta(seconds = 60 * TIMESLOT * timeslots)
+                                time_available = time.strftime(FMT)
+                                print('Available from '+single_time.strftime(FMT)+' for '+str(timeslots)+' timeslots ('+time_available+')')
                 else:
                     print(OPTIONS)
                     quit()
         except ValueError:
-            print(OPTIONS)
+            pass
         except KeyError:
             print('Input a time between '+START_STR+' and '+END_STR)
 
