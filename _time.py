@@ -21,8 +21,6 @@ def minutesRange(start,end,delta):
 
 def isNotContained(start1,end1,start2,end2):
 
-	# start2 - start1 <= 0 if start2 <= start1
 	a = start2 - start1
-	# end2 - end1 >= 0 if end2 >= end1
 	b = end2 - end1
 	return not (a.total_seconds() <= 0 and b.total_seconds() >= 0)
