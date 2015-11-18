@@ -1,5 +1,5 @@
 import json
-import requests
+import urllib.request
 import csv
 from pprint import pprint
 from collections import defaultdict
@@ -29,8 +29,10 @@ def main():
 
             path, name, id = row['path'], row['name'], row['id']
 
-            response = requests.get(ENDPOINT + id +'/', {DAY : DATE})
-            jsonData = json.loads(response.text)
+            request = ENDPOINT + id +'/?'+DAY+'='+DATE
+            response = urllib.request.urlopen(request)
+            str_response = response.readall().decode('utf-8')
+            jsonData = json.loads(str_response)
 
             # Initialization of the dict
             events = dict((weekday,list()) for weekday in WEEKDAYS)
